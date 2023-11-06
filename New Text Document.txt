@@ -1,0 +1,34 @@
+using System;
+using System.IO;
+using System.Text;
+
+class Program
+{
+    static void Main()
+    {
+        // Get the path of the executing .exe
+        var exePath = AppDomain.CurrentDomain.BaseDirectory;
+        var folderPath = Path.Combine(exePath, "Folder");
+
+        // Create the folder if it doesn't exist
+        Directory.CreateDirectory(folderPath);
+
+        // Get all .md files in the folder
+        var mdFiles = Directory.GetFiles(folderPath, "*.md");
+
+        var sb = new StringBuilder();
+
+        // Read all .md files and append their content to the StringBuilder
+        foreach (var file in mdFiles)
+        {
+            var content = File.ReadAllText(file);
+            sb.AppendLine(content);
+        }
+
+        // Write the concatenated content to a new .md file
+        var newFilePath = Path.Combine(folderPath, "NewFile.md");
+        File.WriteAllText(newFilePath, sb.ToString());
+
+        Console.WriteLine("All .md files have been concatenated into NewFile.md");
+    }
+}
